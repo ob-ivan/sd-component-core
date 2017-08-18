@@ -1,5 +1,5 @@
 <?php
-namespace SD\ComponentCore\Factory\DependencyInjection;
+namespace SD\ComponentCore\DependencyInjection;
 
 use SD\ComponentCore\Factory\Factory;
 use SD\DependencyInjection\ProviderInterface;
