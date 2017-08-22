@@ -2,16 +2,22 @@
 namespace SD\ComponentCore\Factory;
 
 use SD\ComponentCore\ComponentInterface;
+use SD\DependencyInjection\AutoDeclarerInterface;
+use SD\DependencyInjection\AutoDeclarerTrait;
 use SD\DependencyInjection\ContainerAwareTrait;
-use SD\DependencyInjection\DeclarerInterface;
 
-class ComponentFactory implements ComponentFactoryInterface, DeclarerInterface {
+class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterface {
+    use AutoDeclarerTrait;
     use ContainerAwareTrait;
 
-    private $namespaces = ['SD_Component_'];
+    private $namespaces = [];
 
-    public function declareDependencies() {
-        return ['container'];
+    public function __construct(array $namespaces = []) {
+        $this->namespaces = array_map('strval', $namespaces);
+    }
+
+    public function addNamespace(string $namespace) {
+        $this->namespaces[] = $namespace;
     }
 
     public function map(string $componentName, array $parameterArray): array {
@@ -28,7 +34,7 @@ class ComponentFactory implements ComponentFactoryInterface, DeclarerInterface {
         foreach ($this->namespaces as $namespace) {
             $className = $namespace . $componentClass;
             if (class_exists($className)) {
-                return $this->container->produce(function () use ($className, $parameters) {
+                return $this->getContainer()->produce(function () use ($className, $parameters) {
                     return new $className(...$parameters);
                 });
             }
