@@ -1,5 +1,10 @@
 <?php
 namespace tests;
 
-class HelloWorld {
+use SD\ComponentCore\ComponentInterface;
+
+class HelloWorld implements ComponentInterface {
+    public function render(): string {
+        return '';
+    }
 }

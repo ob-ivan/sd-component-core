@@ -21,6 +21,7 @@ class ComponentFactoryTest extends TestCase {
 
     public function testCreateSimple() {
         $factory = new ComponentFactory(['tests']);
+        $factory->setContainer(new Container());
         $component = $factory->create('HelloWorld');
         $this->assertInstanceOf(HelloWorld::class, $component, 'Must return instance of HelloWorld component');
     }
