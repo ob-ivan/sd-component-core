@@ -75,7 +75,7 @@ abstract class TwigComponent implements
                     'data' => $subdata,
                 ];
             } elseif (is_array($value)) {
-                $value = $this->unfold($value);
+                $data[$key] = $this->unfold($value);
             }
         }
         return $data;

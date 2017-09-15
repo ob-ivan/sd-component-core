@@ -15,6 +15,7 @@
     },
     "require": {
         "ob-ivan/sd-dependency-injection": "^1.2.2",
-        "twig/twig": "^2.3"
+        "twig/twig": "^2.3",
+        "ob-ivan/sd-profiler": "^1.1"
     }
 }
