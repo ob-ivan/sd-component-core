@@ -4,7 +4,7 @@ namespace SD\ComponentCore\DependencyInjection;
 use SD\ComponentCore\Factory\ComponentFactoryInterface;
 
 trait ComponentFactoryAwareTrait {
-    private $autoDeclareComponentFactory = 'componentFactory';
+    protected $autoDeclareComponentFactory = 'componentFactory';
     private $componentFactory;
 
     public function setComponentFactory(ComponentFactoryInterface $componentFactory) {

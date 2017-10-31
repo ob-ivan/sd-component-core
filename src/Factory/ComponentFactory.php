@@ -34,9 +34,7 @@ class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterfa
         foreach ($this->namespaces as $namespace) {
             foreach ($this->getClassNames($namespace, $componentName) as $className) {
                 if (class_exists($className)) {
-                    return $this->getContainer()->produce(function () use ($className, $parameters) {
-                        return new $className(...$parameters);
-                    });
+                    return $this->getContainer()->produce(new $className(...$parameters));
                 }
                 $tried[] = $className;
             }
