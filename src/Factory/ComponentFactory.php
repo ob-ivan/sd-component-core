@@ -71,7 +71,7 @@ class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterfa
         if (false === strpos($componentName, ':')) {
             return [$componentName];
         }
-        $separators = ['\\'];
+        $separators = ['\\\\'];
         if ($hasUnderscore) {
             $separators[] = '_';
         }
