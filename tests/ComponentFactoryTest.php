@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use SD\ComponentCore\Factory\ComponentFactory;
 use SD\ComponentCore\Factory\ComponentFactoryException;
 use SD\DependencyInjection\Container;
+use tests\Sub\SubBackslash;
 use tests_Sub_SubSpace;
 
 class ComponentFactoryTest extends TestCase {
@@ -32,5 +33,12 @@ class ComponentFactoryTest extends TestCase {
         $factory->setContainer(new Container());
         $component = $factory->create('Sub:Space');
         $this->assertInstanceOf(tests_Sub_SubSpace::class, $component, 'Must return instance of tests_Sub_SubSpace component');
+    }
+
+    public function testCreateBackslashWithExpand() {
+        $factory = new ComponentFactory(['tests\\']);
+        $factory->setContainer(new Container());
+        $component = $factory->create('Sub:Backslash');
+        $this->assertInstanceOf(SubBackslash::class, $component, 'Must return instance of SubBackslash component');
     }
 }
