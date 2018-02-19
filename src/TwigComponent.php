@@ -1,6 +1,7 @@
 <?php
 namespace SD\ComponentCore;
 
+use SD\Debug\IsDebugAwareTrait;
 use SD\DependencyInjection\AutoDeclarerInterface;
 use SD\DependencyInjection\AutoDeclarerTrait;
 use SD\DependencyInjection\DeclarerInterface;
@@ -15,20 +16,15 @@ abstract class TwigComponent implements
     ComponentInterface
 {
     use AutoDeclarerTrait;
+    use IsDebugAwareTrait;
     use TwigProfileAwareTrait;
 
-    private $isDebug;
     private $twig;
 
     public function declareDependencies() {
         return [
-            'isDebug',
             'twig',
         ];
-    }
-
-    public function setIsDebug(bool $isDebug) {
-        $this->isDebug = $isDebug;
     }
 
     public function setTwig(Twig_Environment $twig) {
