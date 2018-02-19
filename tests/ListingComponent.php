@@ -1,21 +1,24 @@
 <?php
-namespace tests\Sub;
+namespace tests;
 
 use SD\ComponentCore\TwigComponent;
 
-class Listing extends TwigComponent {
+class ListingComponent extends TwigComponent
+{
     private $itemCount;
     private $callCount = 0;
 
-    public function __construct(int $itemCount) {
+    public function __construct(int $itemCount)
+    {
         $this->itemCount = $itemCount;
     }
 
-    public function getData() {
+    public function getData()
+    {
         return [
             'items' => array_map(
                 function ($i) {
-                    return new Callback(function () {
+                    return new CallbackComponent(function () {
                         ++$this->callCount;
                         return [
                             'callCount' => $this->callCount,
@@ -27,7 +30,8 @@ class Listing extends TwigComponent {
         ];
     }
 
-    public function getCallCount() {
+    public function getCallCount()
+    {
         return $this->callCount;
     }
 }
