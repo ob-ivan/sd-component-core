@@ -4,6 +4,7 @@ namespace SD\ComponentCore;
 use SD\DependencyInjection\AutoDeclarerInterface;
 use SD\DependencyInjection\AutoDeclarerTrait;
 use SD\DependencyInjection\DeclarerInterface;
+use SD\Twig\DependencyInjection\TwigProfileAwareTrait;
 use Twig_Environment;
 use Twig_Profiler_Dumper_Text;
 use Twig_Profiler_Profile;
@@ -14,13 +15,16 @@ abstract class TwigComponent implements
     ComponentInterface
 {
     use AutoDeclarerTrait;
+    use TwigProfileAwareTrait;
 
     private $isDebug;
     private $twig;
-    private $twigProfile;
 
     public function declareDependencies() {
-        return ['isDebug', 'twig', 'twigProfile'];
+        return [
+            'isDebug',
+            'twig',
+        ];
     }
 
     public function setIsDebug(bool $isDebug) {
@@ -29,10 +33,6 @@ abstract class TwigComponent implements
 
     public function setTwig(Twig_Environment $twig) {
         $this->twig = $twig;
-    }
-
-    public function setTwigProfile(Twig_Profiler_Profile $twigProfile) {
-        $this->twigProfile = $twigProfile;
     }
 
     public function __toString() {
