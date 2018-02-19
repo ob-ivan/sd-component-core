@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 use SD\ComponentCore\DependencyInjection\ComponentFactoryProvider;
 use SD\DependencyInjection\Container;
 
-class AwareTraitTest extends TestCase
+class ComponentFactoryAwareTraitTest extends TestCase
 {
     public function testInheritAutoDeclare()
     {
