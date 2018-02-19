@@ -2,25 +2,31 @@
 namespace SD\ComponentCore\Factory;
 
 use SD\ComponentCore\ComponentInterface;
+use SD\ComponentCore\Factory\Exception\NoNamespaceException;
+use SD\ComponentCore\Factory\Exception\UnknownComponentException;
 use SD\DependencyInjection\AutoDeclarerInterface;
 use SD\DependencyInjection\AutoDeclarerTrait;
 use SD\DependencyInjection\ContainerAwareTrait;
 
-class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterface {
+class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterface
+{
     use AutoDeclarerTrait;
     use ContainerAwareTrait;
 
     private $namespaces = [];
 
-    public function __construct(array $namespaces = []) {
+    public function __construct(array $namespaces = [])
+    {
         $this->namespaces = array_map('strval', $namespaces);
     }
 
-    public function addNamespace(string $namespace) {
+    public function addNamespace(string $namespace)
+    {
         $this->namespaces[] = $namespace;
     }
 
-    public function map(string $componentName, array $parameterArray): array {
+    public function map(string $componentName, array $parameterArray): array
+    {
         return array_map(
             function (...$parameters) use ($componentName) {
                 return $this->create($componentName, ...$parameters);
@@ -29,7 +35,11 @@ class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterfa
         );
     }
 
-    public function create(string $componentName, ...$parameters): ComponentInterface {
+    public function create(string $componentName, ...$parameters): ComponentInterface
+    {
+        if (!$this->namespaces) {
+            throw new NoNamespaceException("No namespaces added, provide at least one namespace");
+        }
         $tried = [];
         foreach ($this->namespaces as $namespace) {
             foreach ($this->getClassNames($namespace, $componentName) as $className) {
@@ -39,12 +49,13 @@ class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterfa
                 $tried[] = $className;
             }
         }
-        throw new ComponentFactoryException(
+        throw new UnknownComponentException(
             "Unknown component name '$componentName', tried classnames: '" . implode("', '", $tried) . "'"
         );
     }
 
-    private function getClassNames(string $namespace, string $componentName): array {
+    private function getClassNames(string $namespace, string $componentName): array
+    {
         $hasUnderscore = false !== strpos($namespace, '_') || false !== strpos($componentName, '_');
         $classNames = [];
         foreach ($this->getPrefixes($namespace, $hasUnderscore) as $prefix) {
@@ -55,7 +66,8 @@ class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterfa
         return $classNames;
     }
 
-    private function getPrefixes(string $namespace, bool $hasUnderscore): array {
+    private function getPrefixes(string $namespace, bool $hasUnderscore): array
+    {
         $lastChar = substr($namespace, -1);
         if ($lastChar === '_' || $lastChar === '\\') {
             return [$namespace];
@@ -67,7 +79,8 @@ class ComponentFactory implements AutoDeclarerInterface, ComponentFactoryInterfa
         return $prefixes;
     }
 
-    private function getExpands(string $componentName, bool $hasUnderscore): array {
+    private function getExpands(string $componentName, bool $hasUnderscore): array
+    {
         if (false === strpos($componentName, ':')) {
             return [$componentName];
         }

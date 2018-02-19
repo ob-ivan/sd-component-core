@@ -3,7 +3,6 @@ namespace tests\Factory;
 
 use PHPUnit\Framework\TestCase;
 use SD\ComponentCore\Factory\ComponentFactory;
-use SD\ComponentCore\Factory\Exception\NoContainerException;
 use SD\ComponentCore\Factory\Exception\NoNamespaceException;
 use SD\ComponentCore\Factory\Exception\UnknownComponentException;
 use SD\DependencyInjection\Container;
@@ -19,18 +18,19 @@ class ComponentFactoryTest extends TestCase
         $factory->create('whatever');
     }
 
+    public function testCreateNoContainerThrows()
+    {
+        $factory = new ComponentFactory([__NAMESPACE__]);
+        $this->expectException(\Throwable::class);
+        $factory->create('HelloWorldComponent');
+    }
+
     public function testCreateUnknownComponentException()
     {
         $factory = new ComponentFactory([__NAMESPACE__]);
+        $factory->setContainer(new Container());
         $this->expectException(UnknownComponentException::class);
         $factory->create('UnknownComponent');
-    }
-
-    public function testCreateNoContainerException()
-    {
-        $factory = new ComponentFactory([__NAMESPACE__]);
-        $this->expectException(NoContainerException::class);
-        $factory->create('HelloWorldComponent');
     }
 
     public function testCreateSimple()
@@ -61,7 +61,7 @@ class ComponentFactoryTest extends TestCase
     public function testCreateBackslashWithExpand()
     {
         $factory = new ComponentFactory();
-        $facotyr->addNamespace(__NAMESPACE__ . '\\');
+        $factory->addNamespace(__NAMESPACE__ . '\\');
         $factory->setContainer(new Container());
         $component = $factory->create('Sub:BackslashComponent');
         $this->assertInstanceOf(
