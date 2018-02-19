@@ -1,5 +1,8 @@
 {
     "name": "ob-ivan/sd-component-core",
+    "config": {
+        "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
             "SD\\ComponentCore\\": "src/"
@@ -14,8 +17,10 @@
         "phpunit/phpunit": "^6.2"
     },
     "require": {
+        "ob-ivan/sd-debug": "^1.1",
         "ob-ivan/sd-dependency-injection": "^1.2.2",
-        "twig/twig": "^2.3",
-        "ob-ivan/sd-profiler": "^1.1"
+        "ob-ivan/sd-profiler": "^1.1",
+        "ob-ivan/sd-twig": "^1.0",
+        "twig/twig": "^2.3"
     }
 }
