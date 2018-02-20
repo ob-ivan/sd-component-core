@@ -20,7 +20,7 @@
         "ob-ivan/sd-debug": "^1.1",
         "ob-ivan/sd-dependency-injection": "^1.2.2",
         "ob-ivan/sd-profiler": "^1.1",
-        "ob-ivan/sd-twig": "^1.0",
+        "ob-ivan/sd-twig": "^1.1",
         "twig/twig": "^2.3"
     }
 }

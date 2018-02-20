@@ -4,38 +4,26 @@ namespace SD\ComponentCore;
 use SD\Debug\IsDebugAwareTrait;
 use SD\DependencyInjection\AutoDeclarerInterface;
 use SD\DependencyInjection\AutoDeclarerTrait;
-use SD\DependencyInjection\DeclarerInterface;
+use SD\Twig\DependencyInjection\TwigAwareTrait;
 use SD\Twig\DependencyInjection\TwigProfileAwareTrait;
-use Twig_Environment;
 use Twig_Profiler_Dumper_Text;
-use Twig_Profiler_Profile;
 
 abstract class TwigComponent implements
     AutoDeclarerInterface,
-    DeclarerInterface,
     ComponentInterface
 {
     use AutoDeclarerTrait;
     use IsDebugAwareTrait;
+    use TwigAwareTrait;
     use TwigProfileAwareTrait;
 
-    private $twig;
-
-    public function declareDependencies() {
-        return [
-            'twig',
-        ];
-    }
-
-    public function setTwig(Twig_Environment $twig) {
-        $this->twig = $twig;
-    }
-
-    public function __toString() {
+    public function __toString()
+    {
         return $this->render();
     }
 
-    public function render(): string {
+    public function render(): string
+    {
         // Get data and unfold included components' data
         profiler()->in(get_called_class() . '->getData');
         $data = $this->unfold($this->getData());
@@ -56,11 +44,13 @@ abstract class TwigComponent implements
 
     abstract public function getData();
 
-    public function getTemplate() {
+    public function getTemplate()
+    {
         return str_replace('_', '/', get_called_class());
     }
 
-    private function unfold(array $data): array {
+    private function unfold(array $data): array
+    {
         foreach ($data as $key => $value) {
             if ($value instanceof ComponentInterface) {
                 profiler()->in(get_class($value) . '->getData');
